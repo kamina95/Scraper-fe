@@ -9,66 +9,13 @@
     <!-- Axios library -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <style>
-        .card-entry {
-            display: flex;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer; /* Makes the cursor a hand pointer when hovered over the card */
-            transition: background-color 0.3s; /* Smooth transition for the background color change */
-        }
-
-        .card-entry:hover {
-            background-color: #f5f5f5; /* A light grey background when hovered */
-        }
-
-        .card-image {
-            margin-right: 20px;
-        }
-
-        img {
-            max-width: 150px; /* Adjust the image width if needed */
-        }
-        .search-bar {
-            margin-bottom: 20px;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .pagination span.active {
-            font-weight: bold;
-            color: blue;
-        }
-
-        .pagination span {
-            cursor: pointer;
-            margin: 0 5px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .pagination span:hover {
-            background-color: #f0f0f0;
-        }
-
-        h1 {
-            cursor: pointer;
-        }
-
-        
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 
     <div id="app">
         <h1 @click="resetView()">GRAPHIC CARD COMPARATOR</h1>
-        <div class="search-bar">
+        <div class="search-bar" v-if="showSearchBar">
             <input v-model="searchModel" placeholder="Enter graphic card model">
             <button @click="loadAllGraphicCards">Search</button>
         </div>
@@ -78,9 +25,8 @@
                 <div class="card-image">
                     <img :src="graphicCard.img_url" :alt="'Image for ' + graphicCard.model">
                 </div>
-                <div class="card-details" @click="loadComparison(graphicCard.id, graphicCard.img_url, graphicCard.description, graphicCard.model)">
-                    <p><b>Model:</b> {{graphicCard.model}}</p>
-                    <p><b>Brand:</b> {{graphicCard.brand}}</p>
+                <div class="card-details" @click="loadComparison(graphicCard.id, graphicCard.img_url, graphicCard.description, graphicCard.model, graphicCard.brand)">
+                    <p><b>Model:</b> {{graphicCard.model}}            <b>Brand:</b> {{graphicCard.brand}}</p>
                     <p><b>Description:</b> {{graphicCard.description}}</p>
                 </div>
             </div>
@@ -94,15 +40,23 @@
         </div>
 
         <div v-else>
-            <div class="card-image">
-                <img :src="img_url">
-                <p><b>Description:</b> {{description}}</p>
+            <div class="comparison-header">
+                <div class="card-image">
+                    <img :src="img_url">
+                </div>
+                <div class="description-container">
+                    <p><b>Model:</b> {{model}} <b>Brand:</b> {{brand}}</p>
+                    <p><b>Description:</b> {{description}}</p>
+                </div>
             </div>
             <div class="card-entry" v-for="card in comparisonCards" @click="redirectToCardUrl(card.url)">
-                    <p><b>Model:</b> {{model}}</p>
-                    <p><b>Brand:</b> {{card.brand}}</p>
-                    <p><b>Url:</b> <a :href="card.url" target="_blank">link</a></p>
-                    <p><b>Price:</b> {{card.price}}£</p>
+                <p><b>Price:</b> {{card.price}}£</p>
+                <p><b>Source:</b> {{ getBaseDomain(card.url) }}</p>
+                <div class="card-link"> <!-- New div for the link -->
+                    <a :href="card.url" target="_blank">View Details</a>
+                </div>
+                    <!-- <p><b>Url:</b> <a :href="card.url" target="_blank">link</a></p>
+                    <p><b>Price:</b> {{card.price}}£</p> -->
             </div>
 
             <div class="pagination" v-if="comparisonTotalPages > 0">
@@ -119,129 +73,7 @@
             
     </div>
 
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                graphicCards: [],
-                comparisonCards: [],
-                searchModel: "",
-                showComparison: false,
-                img_url:"",
-                description:"",
-                currentPage:1,
-                pageSize:5,
-                totalPages: 0,
-                totNumItems: 0,
-                model:"",
-                comparisonCurrentPage: 1,
-                comparisonPageSize: 5,
-                comparisonTotalPages: 0,
-                comparisonTotNumItems: 0,
-                currentGraphicCardId: null
-            },
-            methods : {
-                loadAllGraphicCards: function (){
-                    var localApp = this;
-                    var url = 'http://localhost:8080/graphic_cards/search_model/' + this.searchModel;
-                    url += '?page=' + this.currentPage + '&pageSize=' + this.pageSize;
-                    axios.get(url)
-                        .then(function (response) {
-                            localApp.graphicCards = response.data.graphicCards;
-                            localApp.totalPages = Math.ceil(response.data.totNumItems / localApp.pageSize);
-                            //localApp.totNumItems = response.totNumItems;
-                            //card = ""
-                            //console.log(JSON.stringify(response.data.graphicCards));
-                            console.log(response.data.totNumItems);
-                            console.log(url);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                 },
-
-                 loadComparison: function (id = this.currentGraphicCardId, img_url, description, model){
-                    var localApp = this;
-                    localApp.currentGraphicCardId = id;
-                    var url = 'http://localhost:8080/graphic_cards/' + id;
-                    url += '?page=' + this.comparisonCurrentPage  + '&pageSize=' + this.comparisonPageSize;
-
-                    axios.get(url)
-                        .then(function (response) {
-                            console.log(response.data.totNumItems);
-                            console.log(localApp.comparisonPageSize);
-                            localApp.comparisonTotalPages  = Math.ceil(response.data.totNumItems / localApp.comparisonPageSize);
-                            console.log(localApp.comparisonTotalPages);
-                            localApp.comparisonCards = response.data.comparison;
-                            localApp.showComparison = true;
-                            if (img_url && description && model) {
-                                localApp.img_url = img_url;
-                                localApp.description = description;
-                                localApp.model = model;
-                            }
-                            console.log(url)
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
-                 redirectToCardUrl: function(url) {
-                    window.open(url, '_blank');
-                },
-                 prevPage: function() {
-                   if (this.currentPage > 1) {
-                        this.currentPage--;
-                        this.loadAllGraphicCards();
-                    }
-                 },
-                 nextPage: function() {
-                    if (this.currentPage < this.totalPages) {
-                        this.currentPage++;
-                        this.loadAllGraphicCards();
-                    }
-                 },
-                 goToPage: function(page) {
-                    this.currentPage = page;
-                    this.loadAllGraphicCards();
-                 },
-                 comparisonPrevPage: function() {
-                    if (this.comparisonCurrentPage > 1) {
-                        this.comparisonCurrentPage--;
-                        this.loadComparison();
-                    }
-                },
-
-                comparisonNextPage: function() {
-                    if (this.comparisonCurrentPage < this.comparisonTotalPages) {
-                        this.comparisonCurrentPage++;
-                        this.loadComparison();
-                    }
-                },
-                comparisonGoToPage: function(page) {
-                    this.comparisonCurrentPage = page;
-                    this.loadComparison();
-                },
-                resetView: function() {
-                    this.showComparison = false;
-                    this.searchModel = "";
-                    this.graphicCards = [];
-                    this.comparisonCards = [];
-                    this.currentPage = 1;
-                    this.totalPages = 0;
-                    this.totNumItems = 0;
-
-                    // Reset pagination for comparison list
-                    this.comparisonCurrentPage = 1;
-                    this.comparisonTotalPages = 0;
-                    this.comparisonTotNumItems = 0;
-                },
-                backToResults: function() {
-                    this.showComparison = false;
-                    this.comparisonCurrentPage = 1; // Reset the comparison page to the first page
-                }
-            },
-        })
-    </script>
+    <script src="script.js"></script>
 
   </body>
 </html>

@@ -61,19 +61,6 @@ function handleGetRequest(request, response){
         getGraphicCardByIdCount(response, pathEnd, numItems, pageNum);
         return;
     }
-
-    // //If path ends with 'cereals' we return all cereals
-    // if(pathEnd === 'graphic_cards'){
-    //     getGraphicCardsCount(response, numItems, pageNum);//This function calls the getAllCereals function in its callback
-    //     return;
-    // }
-
-    // //If path ends with cereals/, we return all cereals
-    // if (pathEnd === '' && pathArray[pathArray.length - 2] === 'graphic_cards'){
-    //     getGraphicCardsCount(response, numItems, pageNum);//This function calls the getAllCereals function in its callback
-    //     return;
-    // }
-
     //The path is not recognized. Return an error message
     response.status(HTTP_STATUS.NOT_FOUND);
     response.send("{error: 'Path not recognized', url: " + request.url + "}");
@@ -252,3 +239,14 @@ function getGraphicCardByModel(response, model, totNumItems, numItems, pageNum){
 //     });
 // }
 
+    // //If path ends with 'cereals' we return all cereals
+    // if(pathEnd === 'graphic_cards'){
+    //     getGraphicCardsCount(response, numItems, pageNum);//This function calls the getAllCereals function in its callback
+    //     return;
+    // }
+
+    // //If path ends with cereals/, we return all cereals
+    // if (pathEnd === '' && pathArray[pathArray.length - 2] === 'graphic_cards'){
+    //     getGraphicCardsCount(response, numItems, pageNum);//This function calls the getAllCereals function in its callback
+    //     return;
+    // }

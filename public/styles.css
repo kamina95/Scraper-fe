@@ -1,0 +1,171 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button[disabled] {
+    background-color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+/* Header Styles */
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin: 20px 0 50px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Search Bar Styles */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px; /* Increased the margin here */
+}
+
+.search-bar input {
+    width: 300px;
+    padding: 10px;
+    font-size: 1.1em;
+    border-radius: 4px 0 0 4px;
+    border: none;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Card Entry Styles */
+.card-entry {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-entry:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+    margin-right: 20px;
+}
+
+.card-image img {
+    max-width: 150px;
+    border-radius: 5px;
+}
+
+.card-details p {
+    margin: 10px 0;
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination span {
+    cursor: pointer;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.pagination span:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination span.active {
+    font-weight: bold;
+    color: blue;
+}
+
+.comparison-header {
+    display: flex; /* Flexbox to align children side by side */
+    justify-content: space-between; /* Distribute space evenly between image and description */
+    align-items: center; /* Center them vertically */
+    margin-bottom: 30px; /* Space between this section and the cards below */
+    padding: 20px; /* Padding around the section */
+    border-radius: 5px; /* Rounded edges */
+    background-color: #f5f5f5; /* A light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* A subtle shadow */
+}
+
+.card-image img {
+    max-width: 300px; /* You can adjust this based on your needs */
+    border-radius: 5px; /* Rounded corners for the image */
+    margin-right: 20px; /* Space between the image and the description */
+}
+
+.description-container {
+    flex-grow: 1; /* Allow the description to take the remaining width */
+    padding-left: 20px; /* Padding to the left of the description */
+    border-left: 1px solid #e0e0e0; /* A subtle line separating the image and description */
+}
+
+
+.card-entry {
+    /* ... existing styles ... */
+    justify-content: space-between; /* Distribute space evenly */
+}
+
+.card-details {
+    display: flex;
+    flex-direction: column; /* Stack the contents vertically */
+    justify-content: space-between; /* Distribute space evenly */
+    flex-grow: 1; /* Allow the details section to grow and take up remaining space */
+    padding-left: 20px; /* Space between the image and details */
+}
+
+.card-top {
+    display: flex; /* Side by side alignment for Model and Brand */
+    justify-content: space-between; /* Distribute space between Model and Brand */
+    width: 100%; /* Full width of the card-details */
+}
+
+.card-link a {
+    color: #007BFF; /* Color for the link */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Bold text for emphasis */
+    border: 1px solid #007BFF; /* Border around the link */
+    padding: 5px 10px; /* Padding for the link */
+    border-radius: 5px; /* Rounded corners for the link */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.card-link a:hover {
+    background-color: #007BFF; /* Change background on hover */
+    color: #fff; /* Change text color on hover */
+}
